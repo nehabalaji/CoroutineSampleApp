@@ -16,10 +16,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         GlobalScope.launch {
-            delay(3000L)
-            Log.v(TAG, "Hello this is a message from coroutines from the thread ${Thread.currentThread().name}")
+            val answer = networkCallAnswer()
+            Log.v(TAG, answer)
         }
-        Log.v(TAG, "Hello this is a message from the thread ${Thread.currentThread().name}")
+    }
 
+    suspend fun networkCallAnswer(): String{
+        delay(3000L)
+        return "This is the answer"
     }
 }
