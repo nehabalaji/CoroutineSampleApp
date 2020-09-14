@@ -1,11 +1,12 @@
 package com.example.coroutinesampleapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import androidx.lifecycle.lifecycleScope
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,14 +16,20 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        GlobalScope.launch {
-            val answer = networkCallAnswer()
-            Log.v(TAG, answer)
+        button.setOnClickListener {
+            lifecycleScope.launch {
+                while (true){
+                    delay(1000L)
+                    Log.v(TAG, "This loop is still running")
+                }
+            }
+            GlobalScope.launch {
+                delay(5000L)
+                Intent(this@MainActivity, SecondActivity::class.java).also {
+                    startActivity(it)
+                    finish()
+                }
+            }
         }
-    }
-
-    suspend fun networkCallAnswer(): String{
-        delay(3000L)
-        return "This is the answer"
     }
 }
